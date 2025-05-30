@@ -76,19 +76,19 @@
 
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-          <td>${idx + 1}</td>
-          <td>${item['Nama']}</td>
-          <td>${item['Alamat']}</td>
-          <td>${item['Jumlah Iuran']}</td>
-          <td>${item['Jenis Hewan']}</td>
-          <td>${item['Total Iuran']}</td>
-          <td>${persentase}%</td>
-          <td>
-            <div class="progress-bar">
-              <div class="progress-bar-fill" style="width: ${persentase}%"></div>
-            </div>
-          </td>
-        `;
+                    <td>${idx + 1}</td>
+                    <td>${item['Nama']}</td>
+                    <td>${item['Alamat']}</td>
+                    <td>${item['Jumlah Iuran']}</td>
+                    <td>${item['Jenis Hewan']}</td>
+                    <td>${item['Total Iuran']}</td>
+                    <td>${persentase}%</td>
+                    <td>
+                        <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: ${persentase}%"></div>
+                        </div>
+                    </td>
+                    `;
                     tbody.appendChild(tr);
                 });
             });
