@@ -37,9 +37,12 @@
       </table>
     </div>
   </section>
+    //const apiUrl = 'https://script.google.com/macros/s/AKfycbz1veGjd9VwvKowtGdCTbf4UN7wrbB2h3jqIFE1b8-1EDvbaxR4o7iMyQhq1FDqDpPeJw/exec'; // old
 
+            // <td style="text-align: right;">${formatRupiah(item['Jumlah Iuran'])}</td>
+            // <td>${item['Jenis Hewan']}</td>
   <script>
-    const apiUrl = 'https://script.google.com/macros/s/AKfycbz1veGjd9VwvKowtGdCTbf4UN7wrbB2h3jqIFE1b8-1EDvbaxR4o7iMyQhq1FDqDpPeJw/exec'; // Ganti dengan link Web App kamu
+    const apiUrl = 'https://script.google.com/macros/s/AKfycbz1veGjd9VwvKowtGdCTbf4UN7wrbB2h3jqIFE1b8-1EDvbaxR4o7iMyQhq1FDqDpPeJw/exec'; // new but i don't know what the diffenrent
 
     function formatRupiah(angka) {
       return new Intl.NumberFormat('id-ID', {
@@ -63,8 +66,6 @@
            <td>${idx + 1}</td>
             <td>${item['Nama']}</td>
             <td>${item['Alamat']}</td>
-            // <td style="text-align: right;">${formatRupiah(item['Jumlah Iuran'])}</td>
-            // <td>${item['Jenis Hewan']}</td>
             <td style="text-align: right;">${formatRupiah(item['Total Iuran'])}</td>
             <td style="text-align: right;">${persentase}%</td>
             <td>
