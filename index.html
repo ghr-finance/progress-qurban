@@ -21,15 +21,6 @@
     width: 0%;
     transition: width 0.3s;
   }
-  .loader {
-    text-align: center;
-    margin: 20px;
-  }
-  .error-message {
-    color: #dc3545;
-    margin: 20px;
-    text-align: center;
-  }
 </style>
 </head>
 <body>
@@ -53,83 +44,32 @@
 
 <script>
   const apiUrl = 'https://script.google.com/macros/s/AKfycby1ejHKB5Mf959U0ztMjqaiG7Xqat1-vy5TUPwA_ghUiVe1rHejIA4Ujs5u4hXkEzerLg/exec';
-  const tableBody = document.querySelector('#table tbody');
-  const table = document.querySelector('#table');
 
-  // Fungsi untuk menampilkan loading
-  function showLoading() {
-    table.style.display = 'none';
-    const loader = document.createElement('div');
-    loader.className = 'loader';
-    loader.textContent = 'Memuat data...';
-    document.body.appendChild(loader);
-    return loader;
-  }
-
-  // Fungsi untuk menampilkan error
-  function showError(message) {
-    table.style.display = 'none';
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.textContent = message;
-    document.body.appendChild(errorDiv);
-  }
-
-  // Fungsi untuk parsing jumlah dengan validasi
-  function parseJumlah(value) {
-    if (!value) return 0;
-    const cleanedValue = value.replace(/[^0-9]/g, '');
-    return isNaN(cleanedValue) ? 0 : parseInt(cleanedValue, 10);
-  }
-
-  // Fungsi untuk menampilkan data
-  function displayData(data) {
-    if (!Array.isArray(data)) {
-      showError('Data tidak valid');
-      return;
-    }
-
-    data.forEach((item, idx) => {
-      if (!item || typeof item !== 'object') return;
-
-      const jumlah = parseJumlah(item['Total Iuran']);
-      const persentase = Math.min(100, (jumlah / 4500000) * 100).toFixed(0);
-
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${idx + 1}</td>
-        <td>${item['Nama'] || 'Tidak tersedia'}</td>
-        <td>${item['Alamat'] || 'Tidak tersedia'}</td>
-        <td>${item['Jumlah Iuran'] || '0'}</td>
-        <td>${item['Jenis Hewan'] || 'Tidak tersedia'}</td>
-        <td>${item['Total Iuran'] || '0'}</td>
-        <td>${persentase}%</td>
-        <td>
-          <div class="progress-bar">
-            <div class="progress-bar-fill" style="width: ${persentase}%"></div>
-          </div>
-        </td>
-      `;
-      tableBody.appendChild(tr);
-    });
-    table.style.display = 'table';
-  }
-
-  // Memulai fetch data
-  const loader = showLoading();
   fetch(apiUrl)
-    .then(res => {
-      if (!res.ok) {
-        throw new Error('Gagal mengambil data');
-      }
-      return res.json();
-    })
-    .then(displayData)
-    .catch(error => {
-      showError(`Terjadi kesalahan: ${error.message}`);
-    })
-    .finally(() => {
-      loader.remove();
+    .then(res => res.json())
+    .then(data => {
+      const tbody = document.querySelector('#table tbody');
+      data.forEach((item, idx) => {
+        const jumlah = parseInt(item['Total Iuran'].replace(/[^0-9]/g, ''), 10) || 0;
+        const persentase = Math.min(100, (jumlah / 4500000) * 100).toFixed(0);
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${idx + 1}</td>
+          <td>${item['Nama']}</td>
+          <td>${item['Alamat']}</td>
+          <td>${item['Jumlah Iuran']}</td>
+          <td>${item['Jenis Hewan']}</td>
+          <td>${item['Total Iuran']}</td>
+          <td>${persentase}%</td>
+          <td>
+            <div class="progress-bar">
+              <div class="progress-bar-fill" style="width: ${persentase}%"></div>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
     });
 </script>
 
