@@ -25,8 +25,8 @@
       transition: width 0.5s ease-in-out;
     }
 
-    .table .tr .th,
-    .table .tr .td {
+    .table tr th,
+    .table tr td {
       font-size: 0.75em;
     }
     
@@ -39,7 +39,12 @@
     }
     
     .table {
-      --bulma-table-cell-padding: 0.25em 0.5em;
+      --bulma-table-cell-padding: 0.25em !important;
+    }
+
+    a {
+      display: block;
+      margin-left: auto;
     }
   </style>
 </head>
