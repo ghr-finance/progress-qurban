@@ -2,7 +2,9 @@ const sheetId = '1rZekKmhyswz5hHC4vuA0BZnGWKEFkBv-AzDEOupC9es'; // Ganti dengan 
 const sheetName = 'PROGRESS'; // Ganti jika nama sheet berbeda
 const apiKey = ''; // Ganti dengan API Key Google (atau kosong jika sheet publik)
 
-const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
+// const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
+const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=PROGRESS`;
+
 
 fetch(url)
   .then(response => response.json())
