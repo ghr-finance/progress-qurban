@@ -1,5 +1,5 @@
 const sheetId = '1rZekKmhyswz5hHC4vuA0BZnGWKEFkBv-AzDEOupC9es';
-const sheetName = 'PROGRESS PEMBELIAN';
+const sheetName = 'PROGRESS PEMBELIAN!A1:C13';
 const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
 
 fetch(url)
