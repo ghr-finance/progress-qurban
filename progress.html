@@ -1,38 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <title>Progress Pembelian Sapi</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-  <style>
-    body {
-      background-color: #f5f5f5;
-    }
-    .box {
-      margin: 20px auto;
-    }
-    .title {
-      font-size: 1.5rem;
-    }
-    @media (min-width: 768px) {
-      .box {
-        max-width: 600px;
-      }
-      .title {
-        font-size: 2rem;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Progres Pembelian Sapi</title>
+<link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet">
 </head>
-<body>
-  <section class="section">
-    <div class="container">
-      <h1 class="title has-text-centered">Progress Pembelian Sapi</h1>
-      <div id="data-container"></div>
-    </div>
-  </section>
+<body class="section">
+<div class="container">
+  <h1 class="title">Progres Pembelian Sapi</h1>
+  <div id="data-container"></div>
+</div>
 
-  <script src="script.js"></script>
+<script>
+const sheetID = "1rZekKmhyswz5hHC4vuA0BZnGWKEFkBv-AzDEOupC9es"; // Ganti dengan SHEET_ID-mu
+const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json&sheet=Sheet3`;
+
+// Fungsi format tanggal ke format Indonesia
+const formatTanggalIndonesia = (dateStr) => {
+  if (!dateStr || !dateStr.startsWith("Date(")) return dateStr;
+  const parts = dateStr.match(/Date\((\d+),(\d+),(\d+)\)/);
+  if (parts) {
+    const tahun = parts[1];
+    const bulanIndex = Number(parts[2]);
+    const tanggal = parts[3];
+    const bulanIndonesia = [
+      "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+      "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ];
+    const namaBulan = bulanIndonesia[bulanIndex];
+    return `${tanggal} ${namaBulan} ${tahun}`;
+  }
+  return dateStr;
+};
+
+fetch(url)
+  .then(res => res.text())
+  .then(text => {
+    const jsonText = text.substring(47, text.length - 2);
+    const json = JSON.parse(jsonText);
+    const rows = json.table.rows;
+
+    const container = document.getElementById("data-container");
+    rows.forEach(row => {
+      const cells = row.c.map(cell => (cell ? cell.v : ""));
+
+      const html = `
+      <table class="table is-bordered is-striped is-fullwidth mb-5">
+        <tbody>
+          <tr><th>No.</th><td>${cells[0]}</td></tr>
+          <tr><th>Jenis Hewan</th><td>${cells[1]}</td></tr>
+          <tr><th>Harga</th><td>${cells[2]}</td></tr>
+          <tr><th>Penjual</th><td>${cells[3]}</td></tr>
+          <tr><th>Kontak Penjual</th><td>${cells[4]}</td></tr>
+          <tr><th>Keterangan</th><td>${cells[5]}</td></tr>
+          <tr><th>Tanggal Transaksi</th><td>${formatTanggalIndonesia(cells[6])}</td></tr>
+          <tr><th>Jumlah Transaksi</th><td>${cells[7]}</td></tr>
+          <tr><th>Sisa</th><td>${cells[8]}</td></tr>
+          <tr><th>Tanggal Pelunasan</th><td>${formatTanggalIndonesia(cells[9])}</td></tr>
+          <tr><th>Tanggal Pengiriman</th><td>${formatTanggalIndonesia(cells[10])}</td></tr>
+          <tr><th>Petugas Penerima</th><td>${cells[11]}</td></tr>
+        </tbody>
+      </table>
+      `;
+      container.insertAdjacentHTML("beforeend", html);
+    });
+  })
+  .catch(err => console.error("Error fetching data:", err));
+</script>
 </body>
 </html>
