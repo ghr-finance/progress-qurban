@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Progres Pembelian Sapi</title>
+<link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet">
+</head>
+<body class="section">
+<div class="container">
+  <h1 class="title">Progres Pembelian Sapi</h1>
+  <div id="data-container"></div>
+</div>
+
+<script>
+const sheetID = "1rZekKmhyswz5hHC4vuA0BZnGWKEFkBv-AzDEOupC9es"; // Ganti dengan SHEET_ID-mu
+const url = `https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet3`;
+
+fetch(url)
+  .then(res => res.text())
+  .then(text => {
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+    const rows = json.table.rows;
+
+    const container = document.getElementById("data-container");
+
+    rows.forEach(row => {
+      const cells = row.c.map(cell => (cell ? cell.v : ""));
+      const html = `
+      <article class="media box mb-3">
+        <div class="media-content">
+          <div class="content">
+            <p><strong>No.:</strong> ${cells[0]}</p>
+            <p><strong>Jenis Hewan:</strong> ${cells[1]}</p>
+            <p><strong>Harga:</strong> ${cells[2]}</p>
+            <p><strong>Penjual:</strong> ${cells[3]}</p>
+            <p><strong>Kontak Penjual:</strong> ${cells[4]}</p>
+            <p><strong>Keterangan:</strong> ${cells[5]}</p>
+            <p><strong>Tanggal Transaksi:</strong> ${cells[6]}</p>
+            <p><strong>Jumlah Transaksi:</strong> ${cells[7]}</p>
+            <p><strong>Sisa:</strong> ${cells[8]}</p>
+            <p><strong>Tanggal Pelunasan:</strong> ${cells[9]}</p>
+            <p><strong>Tanggal Pengiriman:</strong> ${cells[10]}</p>
+            <p><strong>Petugas Penerima:</strong> ${cells[11]}</p>
+          </div>
+        </div>
+      </article>
+      `;
+      container.insertAdjacentHTML("beforeend", html);
+    });
+  })
+  .catch(err => console.error("Error fetching data:", err));
+</script>
+</body>
+</html>
